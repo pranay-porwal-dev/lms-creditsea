@@ -30,7 +30,7 @@ router.post(
       // Date must be after disbursement/creation date
       const paymentDate = new Date(date);
       // Amount validation
-      if (parseFloat(amount) > loan.outstanding)
+      if (parseFloat(amount) > loan.outstanding+0.01)
         return res
           .status(400)
           .json({

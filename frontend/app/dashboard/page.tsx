@@ -90,7 +90,7 @@ export default function DashboardPage() {
       }));
       return;
     }
-    if (parseFloat(pd.amount) > outstanding) {
+    if (parseFloat(pd.amount) > outstanding+0.01) {
       setPaymentErrors((prev) => ({
         ...prev,
         [loanId]: `Amount cannot exceed outstanding ₹${outstanding.toFixed(2)}`,
