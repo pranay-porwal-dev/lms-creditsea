@@ -187,12 +187,18 @@ export default function ApplyPage() {
                 <h2 className="font-semibold text-gray-700 mb-2">
                   Personal Information
                 </h2>
+                <label className="text-sm text-gray-600 font-medium">
+                  Full Name
+                </label>
                 <input
                   className="w-full border rounded-lg p-3"
                   placeholder="Full Name"
                   value={form.fullName}
                   onChange={(e) => update("fullName", e.target.value)}
                 />
+                <label className="text-sm text-gray-600 font-medium">
+                  PAN Number
+                </label>
                 <input
                   className="w-full border rounded-lg p-3"
                   placeholder="PAN (e.g. ABCDE1234F)"
@@ -202,6 +208,9 @@ export default function ApplyPage() {
                 <p className="text-xs text-gray-400">
                   Format: 5 letters + 4 digits + 1 letter (e.g. ABCDE1234F)
                 </p>
+                <label className="text-sm text-gray-600 font-medium">
+                  Date of Birth
+                </label>
                 <input
                   className="w-full border rounded-lg p-3"
                   type="date"
@@ -212,6 +221,9 @@ export default function ApplyPage() {
                 <p className="text-xs text-gray-400">
                   Age must be between 23 and 50 years
                 </p>
+                <label className="text-sm text-gray-600 font-medium">
+                  Monthly Salary (₹)
+                </label>
                 <input
                   className="w-full border rounded-lg p-3"
                   type="number"
@@ -222,6 +234,9 @@ export default function ApplyPage() {
                 <p className="text-xs text-gray-400">
                   Minimum ₹25,000 per month required
                 </p>
+                <label className="text-sm text-gray-600 font-medium">
+                  Employment Mode
+                </label>
                 <select
                   className="w-full border rounded-lg p-3"
                   value={form.employmentMode}

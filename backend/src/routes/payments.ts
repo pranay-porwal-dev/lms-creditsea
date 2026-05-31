@@ -30,12 +30,10 @@ router.post(
       // Date must be after disbursement/creation date
       const paymentDate = new Date(date);
       // Amount validation
-      if (parseFloat(amount) > loan.outstanding+0.01)
-        return res
-          .status(400)
-          .json({
-            message: `Amount exceeds outstanding balance of ₹${loan.outstanding.toFixed(2)}`,
-          });
+      if (parseFloat(amount) > loan.outstanding + 0.01)
+        return res.status(400).json({
+          message: `Amount exceeds outstanding balance of ₹${loan.outstanding.toFixed(2)}`,
+        });
 
       // Only create payment if ALL validations pass
       const payment = await Payment.create({
@@ -46,8 +44,9 @@ router.post(
         recordedBy: req.user!.id,
       });
 
-const newOutstanding = Math.round((loan.outstanding - parseFloat(amount)) * 100) / 100
-const newStatus = newOutstanding <= 0.01 ? 'closed' : 'disbursed'
+      const newOutstanding =
+        Math.round((loan.outstanding - parseFloat(amount)) * 100) / 100;
+      const newStatus = newOutstanding <= 0.01 ? "closed" : "disbursed";
       await Loan.findByIdAndUpdate(req.params.loanId, {
         outstanding: Math.max(0, newOutstanding),
         status: newStatus,

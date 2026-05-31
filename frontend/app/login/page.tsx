@@ -9,7 +9,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -44,22 +44,22 @@ export default function LoginPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-<div className="relative">
-  <input
-    className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-400"
-    placeholder="Password" 
-    type={showPassword ? 'text' : 'password'}
-    value={password} 
-    onChange={e => setPassword(e.target.value)}
-  />
-  <button
-    type="button"
-    onClick={() => setShowPassword(!showPassword)}
-    className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
-  >
-    {showPassword ? '🙈' : '👁️'}
-  </button>
-</div>
+        <div className="relative">
+          <input
+            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-400"
+            placeholder="Password"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+          >
+            {showPassword ? "🙈" : "👁️"}
+          </button>
+        </div>
         <button
           onClick={handleLogin}
           disabled={loading}
