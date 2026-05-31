@@ -1,19 +1,12 @@
 # LMS - CreditSea Assignment
 
-## Setup & Run
+A full-stack Loan Management System built with MERN + Next.js + TypeScript.
 
-### Backend
-cd backend
-npm install
-npm run seed
-npm run dev
+## 🚀 Live Demo
+- **Frontend:** https://lms-creditsea.vercel.app
+- **Backend:** https://lms-creditsea.onrender.com
 
-### Frontend
-cd frontend
-npm install
-npm run dev
-
-## Seed Credentials
+## 🔑 Test Credentials
 | Role | Email | Password |
 |------|-------|----------|
 | Admin | admin@lms.com | Admin@123 |
@@ -23,14 +16,61 @@ npm run dev
 | Collection | collection@lms.com | Collection@123 |
 | Borrower | borrower@lms.com | Borrower@123 |
 
-## Tech Stack
-- Backend: Node.js, Express, TypeScript, MongoDB
-- Frontend: Next.js, TypeScript, Tailwind CSS
-- Auth: JWT + bcrypt
-- Deploy: Render (backend) + Vercel (frontend)
+## 🛠 Tech Stack
+- **Frontend:** Next.js 16, TypeScript, Tailwind CSS
+- **Backend:** Node.js, Express, TypeScript
+- **Database:** MongoDB Atlas
+- **Auth:** JWT + bcrypt
+- **Deploy:** Render (backend) + Vercel (frontend)
 
-## Architecture
-- RBAC middleware protects all routes
-- BRE engine validates: age (23-50), salary (≥25k), PAN format, employment
-- Loan FSM: applied → sanctioned → disbursed → closed (or rejected)
-- Simple Interest: (P × R × T) / (365 × 100)
+## ⚙️ Local Setup
+
+### Prerequisites
+- Node.js 18+
+- MongoDB Atlas account
+
+### Backend
+```bash
+cd backend
+npm install
+cp .env.example .env   # fill in your values
+npm run seed           # creates all 6 role accounts
+npm run dev            # runs on port 5000
+```
+
+### Frontend
+```bash
+cd frontend
+npm install
+# create .env.local with:
+# NEXT_PUBLIC_API_URL=http://localhost:5000/api
+npm run dev            # runs on port 3000
+```
+
+## 🏗 Architecture
+- **RBAC** — JWT carries role, middleware enforces access per route
+- **BRE** — server-side rules: age 23–50, salary ≥₹25k, valid PAN, employed
+- **Loan FSM** — applied → sanctioned → disbursed → closed (or rejected)
+- **Interest** — Simple Interest: `(P × R × T) / (365 × 100)` at 12% p.a.
+- **Payments** — UTR unique constraint, auto-closes loan when outstanding = 0
+
+## 📁 Project Structure
+lms-creditsea/
+├── backend/          # Express + TypeScript API
+│   ├── src/
+│   │   ├── models/   # User, Loan, Payment
+│   │   ├── routes/   # auth, loans, payments, users
+│   │   ├── middleware/ # JWT auth + RBAC
+│   │   └── seed.ts
+└── frontend/         # Next.js App Router
+├── app/
+│   ├── login/
+│   ├── signup/
+│   ├── apply/    # 4-step borrower form
+│   └── dashboard/ # role-based operations
+└── lib/api.ts
+
+## 📝 .env.example
+PORT=5000
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/lms?retryWrites=true&w=majority
+JWT_SECRET=your_jwt_secret_here
