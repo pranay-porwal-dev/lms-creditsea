@@ -11,7 +11,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://lms-creditsea.vercel.app'],
+  origin: ['http://localhost:3000', 'https://lms-creditsea-jux850up3-pranay-porwal-s-projects.vercel.app'],
   credentials: true
 }))
 app.use(express.json());
