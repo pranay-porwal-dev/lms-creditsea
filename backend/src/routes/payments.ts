@@ -46,8 +46,8 @@ router.post(
         recordedBy: req.user!.id,
       });
 
-      const newOutstanding = loan.outstanding - parseFloat(amount);
-      const newStatus = newOutstanding <= 0 ? "closed" : "disbursed";
+const newOutstanding = Math.round((loan.outstanding - parseFloat(amount)) * 100) / 100
+const newStatus = newOutstanding <= 0.01 ? 'closed' : 'disbursed'
       await Loan.findByIdAndUpdate(req.params.loanId, {
         outstanding: Math.max(0, newOutstanding),
         status: newStatus,
