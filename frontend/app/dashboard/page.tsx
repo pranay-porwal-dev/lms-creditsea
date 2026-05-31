@@ -407,9 +407,53 @@ export default function DashboardPage() {
         {/* ADMIN MODULE */}
         {user?.role === "admin" && (
           <div>
-            <h2 className="text-xl font-bold mb-4 text-gray-700">
+            <h2 className="text-xl font-bold mb-6 text-gray-700">
               Admin — All Loans
             </h2>
+
+            {/* Summary Cards */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
+              {[
+                {
+                  label: "Applied",
+                  status: "applied",
+                  color: "bg-yellow-50 border-yellow-200 text-yellow-700",
+                },
+                {
+                  label: "Sanctioned",
+                  status: "sanctioned",
+                  color: "bg-blue-50 border-blue-200 text-blue-700",
+                },
+                {
+                  label: "Disbursed",
+                  status: "disbursed",
+                  color: "bg-purple-50 border-purple-200 text-purple-700",
+                },
+                {
+                  label: "Closed",
+                  status: "closed",
+                  color: "bg-green-50 border-green-200 text-green-700",
+                },
+                {
+                  label: "Rejected",
+                  status: "rejected",
+                  color: "bg-red-50 border-red-200 text-red-700",
+                },
+              ].map(({ label, status, color }) => (
+                <div
+                  key={status}
+                  className={`border rounded-xl p-4 text-center ${color}`}
+                >
+                  <p className="text-2xl font-bold">
+                    {loans.filter((l: any) => l.status === status).length}
+                  </p>
+                  <p className="text-xs font-semibold uppercase mt-1">
+                    {label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
             {loans.length === 0 ? (
               <p className="text-gray-400">No loans yet.</p>
             ) : (

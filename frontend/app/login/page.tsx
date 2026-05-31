@@ -44,9 +44,9 @@ export default function LoginPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <div className="relative">
+        <div className="relative mb-4">
           <input
-            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full border rounded-lg p-3 pr-10 focus:outline-none focus:ring-2 focus:ring-green-400"
             placeholder="Password"
             type={showPassword ? "text" : "password"}
             value={password}

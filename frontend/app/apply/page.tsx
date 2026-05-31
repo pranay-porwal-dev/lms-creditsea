@@ -5,6 +5,135 @@ import API from "../../lib/api";
 
 const STEPS = ["Personal Info", "Documents", "Loan Details", "Review"];
 
+function LoanStatus() {
+  const router = useRouter();
+  const [loans, setLoans] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    API.get("/loans/my")
+      .then((res) => {
+        setLoans(res.data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const statusColor: Record<string, string> = {
+    applied: "bg-yellow-100 text-yellow-700",
+    sanctioned: "bg-blue-100 text-blue-700",
+    rejected: "bg-red-100 text-red-700",
+    disbursed: "bg-purple-100 text-purple-700",
+    closed: "bg-green-100 text-green-700",
+  };
+
+  const statusMessage: Record<string, string> = {
+    applied: "Your application is under review by our team.",
+    sanctioned: "Your loan has been approved! Awaiting disbursement.",
+    rejected: "Your application was not approved.",
+    disbursed: "Loan disbursed. Please make payments on time.",
+    closed: "Loan fully repaid. Thank you!",
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="bg-green-700 text-white px-6 py-4 flex justify-between items-center">
+        <h1 className="text-xl font-bold">CreditSea LMS</h1>
+        <button
+          onClick={() => {
+            localStorage.clear();
+            document.cookie = "token=; path=/; max-age=0";
+            router.push("/login");
+          }}
+          className="bg-white text-green-700 px-3 py-1 rounded text-sm font-semibold hover:bg-gray-100"
+        >
+          Logout
+        </button>
+      </div>
+
+      <div className="max-w-xl mx-auto py-10 px-4">
+        <h2 className="text-2xl font-bold text-green-700 mb-6">
+          My Loan Applications
+        </h2>
+
+        {loading && <p className="text-gray-400">Loading...</p>}
+
+        {!loading && loans.length === 0 && (
+          <div className="bg-white rounded-xl shadow p-6 text-center">
+            <p className="text-gray-500">No applications found.</p>
+          </div>
+        )}
+
+        {loans.map((loan: any) => (
+          <div key={loan._id} className="bg-white rounded-xl shadow p-6 mb-4">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <p className="font-bold text-gray-800 text-lg">
+                  ₹{loan.loanAmount?.toLocaleString()}
+                </p>
+                <p className="text-sm text-gray-500">
+                  Tenure: {loan.tenure} days
+                </p>
+              </div>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${statusColor[loan.status]}`}
+              >
+                {loan.status}
+              </span>
+            </div>
+
+            <p className="text-sm text-gray-600 mb-3">
+              {statusMessage[loan.status]}
+            </p>
+
+            <div className="grid grid-cols-2 gap-2 text-sm border-t pt-3">
+              <div>
+                <p className="text-gray-400">Total Repayment</p>
+                <p className="font-semibold">
+                  ₹{loan.totalRepayment?.toFixed(2)}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-400">Outstanding</p>
+                <p className="font-semibold">₹{loan.outstanding?.toFixed(2)}</p>
+              </div>
+              <div>
+                <p className="text-gray-400">Interest Rate</p>
+                <p className="font-semibold">12% p.a.</p>
+              </div>
+              <div>
+                <p className="text-gray-400">Employment</p>
+                <p className="font-semibold capitalize">
+                  {loan.employmentMode}
+                </p>
+              </div>
+            </div>
+
+            {loan.status === "rejected" && loan.rejectionReason && (
+              <div className="mt-3 bg-red-50 border border-red-200 rounded p-3 text-sm text-red-600">
+                Reason: {loan.rejectionReason}
+              </div>
+            )}
+          </div>
+        ))}
+
+        <button
+          onClick={() => {
+            setLoading(true);
+            API.get("/loans/my").then((res) => {
+              setLoans(res.data);
+              setLoading(false);
+            });
+          }}
+          className="w-full mt-2 border border-green-600 text-green-600 py-2 rounded-lg hover:bg-green-50 text-sm"
+        >
+          Refresh Status
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function ApplyPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
@@ -114,30 +243,7 @@ export default function ApplyPage() {
     }
   };
 
-  if (success)
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="bg-white p-8 rounded-xl shadow text-center max-w-md">
-          <div className="text-5xl mb-4">✅</div>
-          <h2 className="text-2xl font-bold text-green-700 mb-2">
-            Application Submitted!
-          </h2>
-          <p className="text-gray-500 mb-6">
-            Your loan application is under review.
-          </p>
-          <button
-            onClick={() => {
-              localStorage.clear();
-              document.cookie = "token=; path=/; max-age=0";
-              router.push("/login");
-            }}
-            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-    );
+  if (success) return <LoanStatus />;
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">

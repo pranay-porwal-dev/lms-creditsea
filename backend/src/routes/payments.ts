@@ -27,7 +27,6 @@ router.post(
       if (!date)
         return res.status(400).json({ message: "Payment date is required" });
 
-      // Date must be after disbursement/creation date
       const paymentDate = new Date(date);
       // Amount validation
       if (parseFloat(amount) > loan.outstanding + 0.01)
